@@ -3,7 +3,7 @@
   position: fixed;
   top: 80px; /* Account for fixed header */
   left: 0;
-  width: 250px;
+  width: 280px;
   height: calc(100vh - 160px); /* Adjust height for header and footer */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;

@@ -9,7 +9,7 @@ import {
   FaCreditCard,
   FaFileMedical,
   FaPills,
-  FaSignInAlt,
+  // eslint-disable-next-line no-unused-vars
   FaSignOutAlt,
   FaUserShield,
   FaAd,
@@ -26,13 +26,15 @@ import './SideNav.css';
 const SideNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [openDropdown, setOpenDropdown] = useState(true);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const location = useLocation();
+  // eslint-disable-next-line no-unused-vars
   const { isAuthenticated, logout } = useAuth();
 
+  // eslint-disable-next-line no-unused-vars
   const handleLogout = () => {
     logout();
-    setIsOpen(false); // Close the side nav after logout
+    setIsOpen(false);
   };
 
   useEffect(() => {
@@ -57,13 +59,13 @@ const SideNav = () => {
         { path: '/products', icon: FaShoppingCart, label: 'Products' },
         { path: '/orders', icon: FaClipboardList, label: 'Orders' },
         { path: '/prescriptions', icon: FaFileMedical, label: 'Prescriptions' },
-        { path: '/login', icon: isAuthenticated ? FaSignOutAlt : FaSignInAlt, label: isAuthenticated ? 'Logout' : 'Login', action: isAuthenticated ? handleLogout : null },
         { path: '/admin', icon: FaUserShield, label: 'Admin' },
         { path: '/admin-login', icon: FaUserShield, label: 'Admin Login' },
         { path: '/checkout', icon: FaCreditCard, label: 'Checkout' },
         { path: '/advertisement', icon: FaAd, label: 'Ads' },
         { path: '/category', icon: FaTags, label: 'Categories' },
         { path: '/about', icon: FaInfoCircle, label: 'About' },
+        ...(isAuthenticated ? [{ action: handleLogout, icon: FaSignOutAlt, label: 'Logout' }] : []),
       ]
     }
   ];
@@ -119,6 +121,7 @@ const SideNav = () => {
                   onClick={() => setOpenDropdown(!openDropdown)}
                 >
                   <Icon className="sidenav-icon" />
+                  <span className="sidenav-label">{item.label}</span>
                   {openDropdown ? <FaChevronUp className="dropdown-icon" /> : <FaChevronDown className="dropdown-icon" />}
                 </div>
                 <AnimatePresence>
@@ -143,7 +146,7 @@ const SideNav = () => {
                           >
                             {subItem.action ? (
                               <button
-                                onClick={subItem.action}
+                                onClick={() => { subItem.action(); setOpenDropdown(false); }}
                                 className={`sidenav-link sub-link ${isActive ? 'active' : ''}`}
                               >
                                 <SubIcon className="sidenav-icon" />
@@ -153,7 +156,7 @@ const SideNav = () => {
                               <Link
                                 to={subItem.path}
                                 className={`sidenav-link sub-link ${isActive ? 'active' : ''}`}
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => { setIsOpen(false); setOpenDropdown(false); }}
                               >
                                 <SubIcon className="sidenav-icon" />
                                 <span className="sidenav-label">{subItem.label}</span>

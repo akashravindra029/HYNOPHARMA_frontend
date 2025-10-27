@@ -10,6 +10,11 @@ const Footer = () => {
         <div className="footer-section">
           <h3>HynoPharmacy</h3>
           <p>Your trusted online pharmacy for quality medicines and healthcare products. We ensure safe and reliable delivery to your doorstep.</p>
+          <p className="mission-statement">Committed to excellence in pharmaceutical care, providing innovative solutions for better health outcomes.</p>
+          <div className="certifications">
+            <span className="cert-badge">ISO 9001 Certified</span>
+            <span className="cert-badge">WHO-GMP Compliant</span>
+          </div>
           <div className="social-links">
             <button className="social-link" aria-label="Facebook" onClick={() => window.open('https://www.facebook.com', '_blank')}><FaFacebook /></button>
             <button className="social-link" aria-label="Twitter" onClick={() => window.open('https://www.twitter.com', '_blank')}><FaTwitter /></button>

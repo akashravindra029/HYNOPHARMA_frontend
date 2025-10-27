@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCreditCard, FaPlus, FaTrash, FaCheckCircle } from 'react-icons/fa';
 import './Payments.css';
@@ -23,12 +23,65 @@ const Payments = () => {
     }
   ]);
 
-  const [transactions] = useState([
-    { id: 1, date: '2024-01-15', amount: -45.99, description: 'Order #ORD-001', status: 'completed' },
-    { id: 2, date: '2024-01-12', amount: -23.49, description: 'Order #ORD-002', status: 'completed' },
-    { id: 3, date: '2024-01-10', amount: 50.00, description: 'Refund - Order #ORD-004', status: 'completed' },
-    { id: 4, date: '2024-01-08', amount: -12.99, description: 'Order #ORD-003', status: 'pending' }
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    // Mock orders data - in real app, this would come from an API
+    const mockOrders = [
+      {
+        id: 'ORD-001',
+        date: '2024-01-15',
+        status: 'delivered',
+        total: 45.99,
+        items: [
+          { name: 'Paracetamol 500mg', quantity: 2, price: 5.99 },
+          { name: 'Vitamin C 1000mg', quantity: 1, price: 15.99 },
+          { name: 'Ibuprofen 200mg', quantity: 1, price: 7.49 }
+        ]
+      },
+      {
+        id: 'ORD-002',
+        date: '2024-01-12',
+        status: 'shipped',
+        total: 23.49,
+        items: [
+          { name: 'Cetirizine 10mg', quantity: 1, price: 8.49 },
+          { name: 'Aspirin 75mg', quantity: 2, price: 4.99 }
+        ]
+      },
+      {
+        id: 'ORD-003',
+        date: '2024-01-10',
+        status: 'processing',
+        total: 67.98,
+        items: [
+          { name: 'Multivitamin Tablets', quantity: 1, price: 18.99 },
+          { name: 'Omeprazole 20mg', quantity: 3, price: 9.99 }
+        ]
+      },
+      {
+        id: 'ORD-004',
+        date: '2024-01-08',
+        status: 'cancelled',
+        total: 12.99,
+        items: [
+          { name: 'Amoxicillin 500mg', quantity: 1, price: 12.99 }
+        ]
+      }
+    ];
+    setOrders(mockOrders);
+
+    // Generate transactions from orders
+    const generatedTransactions = mockOrders.map(order => ({
+      id: order.id,
+      date: order.date,
+      amount: -order.total, // Negative for debit
+      description: `Order #${order.id}`,
+      status: order.status === 'delivered' ? 'completed' : order.status === 'cancelled' ? 'cancelled' : 'pending'
+    }));
+    setTransactions(generatedTransactions);
+  }, []);
 
   const [showAddForm, setShowAddForm] = useState(false);
   const [newCard, setNewCard] = useState({
